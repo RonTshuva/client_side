@@ -5,7 +5,8 @@ class SignUp extends React.Component {
     state = {
         username: "",
         password: "",
-        response: ""
+        response: "",
+        responseColor : "black"
     }
     onUsernameChange = (e) => {
         let username = e.target.value;
@@ -20,25 +21,45 @@ class SignUp extends React.Component {
         })
     }
 
+    strongPasswordCheck = () =>{
+        // it is better to make a method here and not update the state.
+        // hard to explain but when i try to update the state and check the state variable it has a delay and can cause bugs and give the user a false positive feed back (as if his password is weak although it isn't)
+        const englishChar = /[a-zA-Z]/.test(this.state.password);
+        const numbers = /[0-9]/.test(this.state.password);
+        const strongLength = this.state.password.length >= 6;
+        return numbers && englishChar && strongLength;
+    }
+
     signUp = () => {
-        axios.get("http://localhost:8989/create-account", {
-            params: {
-                username: this.state.username,
-                password: this.state.password
-            }
-        })
-            .then((response) => {
-                if (response.data) {
-                    this.setState({
-                        response:"You are hara"
-                    })
-                } else {
-                    this.setState({
-                        response: "user already exist"
-                    })
+        if(this.strongPasswordCheck()) {
+            this.setState({response: ""}); // reset response
+            axios.get("http://localhost:8989/create-account", {
+                params: {
+                    username: this.state.username,
+                    password: this.state.password
                 }
             })
+                .then((response) => {
+                    if (response.data) {
+                        this.setState({
+                            response: "You are hara"
+                        })
+                    } else {
+                        this.setState({
+                            response: "user already exist"
+                        })
+                    }
+                })
+        }else{
+            this.setState({
+                response : "password must contain at least 6 characters, english letters and numbers!",
+                responseColor: "red"
+            })
+
+        }
     }
+
+
     render() {
 
         return (
@@ -55,16 +76,14 @@ class SignUp extends React.Component {
                        value={this.state.password}
                        placeholder={"Enter password"}
                 />
-                <h6>(The password must be at least 4 characters long! )</h6>
-                <NavLink to={"/login"}>
-                    <br/>
-                    <button id ="button" onClick={this.signUp}>Create</button>
-                </NavLink>
+
+                <br/>
+                <button id ="button" onClick={this.signUp}>Create</button>
+
                 {
                     this.state.response.length > 0  &&
-                    <div> {this.state.response} </div>
+                    <div style={{color : this.state.responseColor }}> {this.state.response} </div>
                 }
-
 
             </div>
         )
