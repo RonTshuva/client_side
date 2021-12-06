@@ -42,7 +42,7 @@ class SignUp extends React.Component {
                 .then((response) => {
                     if (response.data) {
                         this.setState({
-                            response: "You are hara"
+                            response: "Account created successfully!"
                         })
                     } else {
                         this.setState({
@@ -55,7 +55,6 @@ class SignUp extends React.Component {
                 response : "password must contain at least 6 characters, english letters and numbers!",
                 responseColor: "red"
             })
-
         }
     }
 
@@ -79,12 +78,10 @@ class SignUp extends React.Component {
 
                 <br/>
                 <button id ="button" onClick={this.signUp}>Create</button>
-
                 {
                     this.state.response.length > 0  &&
                     <div style={{color : this.state.responseColor }}> {this.state.response} </div>
                 }
-
             </div>
         )
     }
