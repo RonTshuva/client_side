@@ -5,7 +5,8 @@ class SignUp extends React.Component {
     state = {
         username: "",
         password: "",
-        response: ""
+        response: "",
+        checkUsername :false
     }
     onUsernameChange = (e) => {
         let username = e.target.value;
@@ -14,6 +15,7 @@ class SignUp extends React.Component {
         })
     }
 
+
     onPasswordChange = (e) => {
         this.setState({
             password: e.target.value
@@ -21,23 +23,38 @@ class SignUp extends React.Component {
     }
 
     signUp = () => {
-        axios.get("http://localhost:8989/create-account", {
-            params: {
-                username: this.state.username,
-                password: this.state.password
-            }
-        })
-            .then((response) => {
-                if (response.data) {
-                    this.setState({
-                        response:"You are hara"
-                    })
-                } else {
-                    this.setState({
-                        response: "user already exist"
-                    })
+        const startNumber =this.state.username.startsWith("050") || this.state.username.startsWith("052") || this.state.username.startsWith("053")
+                            || this.state.username.startsWith("054") ||this.state.username.startsWith("055")
+        if(this.state.username.length === 10 && startNumber){
+            this.setState({
+                checkUsername : true,
+                response :"good!"
+            })
+        }
+        else{
+            this.setState(({
+                response : "Error,Please Enter username valid"
+            }))
+        }
+        if (this.state.checkUsername === true) {
+            axios.get("http://localhost:8989/create-account", {
+                params: {
+                    username: this.state.username,
+                    password: this.state.password
                 }
             })
+                .then((response) => {
+                    if (response.data) {
+                        this.setState({
+                            response: "You are hara"
+                        })
+                    } else {
+                        this.setState({
+                            response: "user already exist"
+                        })
+                    }
+                })
+        }
     }
     render() {
 
@@ -55,11 +72,11 @@ class SignUp extends React.Component {
                        value={this.state.password}
                        placeholder={"Enter password"}
                 />
-                <h6>(The password must be at least 4 characters long! )</h6>
-                <NavLink to={"/login"}>
+                <h6>(The username must to be 10 numbers)</h6>
+
                     <br/>
                     <button id ="button" onClick={this.signUp}>Create</button>
-                </NavLink>
+
                 {
                     this.state.response.length > 0  &&
                     <div> {this.state.response} </div>
