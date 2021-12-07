@@ -25,7 +25,6 @@ class App extends React.Component{
                     <Route path={"/sign-up"} element={<SignUp/>}/>
                   </Routes>
                 </div>
-
             }
           </BrowserRouter>
 

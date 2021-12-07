@@ -5,16 +5,17 @@ class SignUp extends React.Component {
     state = {
         username: "",
         password: "",
-        response: "",
-        checkUsername :false
-    }
-    onUsernameChange = (e) => {
-        let username = e.target.value;
-        this.setState({
-            username: username
-        })
+        responseServer : "",
+        passwordError: "",
+        usernameError : "",
+        responseColor : "black"
     }
 
+    onUsernameChange = (e) => {
+        this.setState({
+            username: e.target.value
+        })
+    }
 
     onPasswordChange = (e) => {
         this.setState({
@@ -22,21 +23,49 @@ class SignUp extends React.Component {
         })
     }
 
-    signUp = () => {
-        const startNumber =this.state.username.startsWith("050") || this.state.username.startsWith("052") || this.state.username.startsWith("053")
-                            || this.state.username.startsWith("054") ||this.state.username.startsWith("055")
-        if(this.state.username.length === 10 && startNumber){
-            this.setState({
-                checkUsername : true,
-                response :"good!"
-            })
+    checkUsername = () =>{
+        let checkUsername = false
+        const startNumber = ["050","052","053","054","055"]
+        const startNumberFilter = startNumber.filter((number) => {
+            return(
+
+                this.state.username.startsWith(number)
+            )
+        })
+        if(startNumberFilter.length > 0 && this.state.username.length === 10) {
+            this.setState({usernameError : ""})
+            checkUsername = true
         }
         else{
             this.setState(({
-                response : "Error,Please Enter username valid"
+                usernameError : "Error,Please Enter username valid"
             }))
         }
-        if (this.state.checkUsername === true) {
+        return checkUsername
+    }
+
+    strongPasswordCheck = () =>{
+        // it is better to make a method here and not update the state.
+        // hard to explain but when i try to update the state and check the state variable it has a delay and can cause bugs and give the user a false positive feed back (as if his password is weak although it isn't)
+        const englishChar = /[a-zA-Z]/.test(this.state.password);
+        const numbers = /[0-9]/.test(this.state.password);
+        const strongLength = this.state.password.length >= 6;
+        if(!(numbers && englishChar && strongLength)){
+            this.setState({
+                passwordError : "password must contain at least 6 characters, english letters and numbers!",
+                responseColor: "red"
+            })
+        }
+        else{
+            this.setState({passwordError: ""}); // reset response
+        }
+        return numbers && englishChar && strongLength;
+    }
+
+    signUp = () => {
+        const success1 = this.checkUsername()
+        const success2 = this.strongPasswordCheck()
+        if (success1 && success2) {
             axios.get("http://localhost:8989/create-account", {
                 params: {
                     username: this.state.username,
@@ -46,16 +75,17 @@ class SignUp extends React.Component {
                 .then((response) => {
                     if (response.data) {
                         this.setState({
-                            response: "You are hara"
+                            responseServer: "You are hara"
                         })
                     } else {
                         this.setState({
-                            response: "user already exist"
+                            responseServer: "user already exist"
                         })
                     }
                 })
         }
     }
+
     render() {
 
         return (
@@ -66,20 +96,31 @@ class SignUp extends React.Component {
                        value={this.state.username}
                        placeholder={"Enter username"}
                 />
+                {
+                    this.state.usernameError.length > 0  &&
+                    <div style={{color : this.state.responseColor }}> {this.state.usernameError} </div>
+                }
                 <br/>
                 <input class = "detailsOfClient"
                        onChange={this.onPasswordChange}
                        value={this.state.password}
                        placeholder={"Enter password"}
                 />
+                {
+                    this.state.passwordError.length > 0  &&
+                    <div style={{color : this.state.responseColor }}> {this.state.passwordError} </div>
+                }
                 <h6>(The username must to be 10 numbers)</h6>
+                <NavLink to={"/login-page"}>
+                    <button id="button" style={{backgroundColor: "darkblue"}}>Back</button>
+                </NavLink>
 
                     <br/>
-                    <button id ="button" onClick={this.signUp}>Create</button>
-
+                    <button id ="button" style={{backgroundColor: "green"}} onClick={this.signUp}>Create</button>
                 {
-                    this.state.response.length > 0  &&
-                    <div> {this.state.response} </div>
+                    this.state.responseServer.length > 0 &&
+                        <div>{this.state.responseServer}</div>
+
                 }
 
 

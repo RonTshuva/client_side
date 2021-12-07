@@ -73,11 +73,11 @@ class LoginPage extends React.Component {
                     />
                 </div>
                 <br/>
-                <button id = "button" onClick={this.login}>Login</button>
+                <button id = "button" style={{backgroundColor: "darkblue"}} onClick={this.login}>Login</button>
                 <br/>
                 <NavLink to={"/sign-up"}>
                     <br/>
-                    <button id = "button">
+                    <button id = "button"  style={{backgroundColor: "green"}}>
                         Sign Up
                     </button>
                 </NavLink>
