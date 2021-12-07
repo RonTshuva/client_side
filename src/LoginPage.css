@@ -14,6 +14,11 @@
     text-align: center;
 }
 
+.LoginPageError{
+    color : red;
+    transform: translate(0px, 10px)
+
+}
 .midTitle{
     font-family: Gill Sans ;
 }

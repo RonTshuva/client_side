@@ -89,12 +89,14 @@ class LoginPage extends React.Component {
                     <NavLink to={"/sign-up"} >
                         <button id={"button"} class={"buttons"} >Sign Up</button>
                     </NavLink>
+                    <br/>
+                    {
+                        this.state.response.length > 0 &&
+                        <div class={"LoginPageError"} > {this.state.response}</div>
+                    }
                 </div>
 
-                {
-                    this.state.response.length > 0 &&
-                    <div style={{color: "red"}}> {this.state.response}</div>
-                }
+
             </div>
         )
     }
