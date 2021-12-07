@@ -1,4 +1,5 @@
 import * as React from "react";
+import "./SignUp.css"
 import axios from "axios";
 import {NavLink} from "react-router-dom";
 class SignUp extends React.Component {
@@ -6,7 +7,8 @@ class SignUp extends React.Component {
         username: "",
         password: "",
         response: "",
-        responseColor : "black"
+        usernameError : "username must be a valid phone number!",
+        passwordError : ""
     }
     onUsernameChange = (e) => {
         let username = e.target.value;
@@ -46,42 +48,53 @@ class SignUp extends React.Component {
                         })
                     } else {
                         this.setState({
-                            response: "user already exist"
+                            usernameError: "user already exist"
                         })
                     }
                 })
         }else{
             this.setState({
-                response : "password must contain at least 6 characters, english letters and numbers!",
-                responseColor: "red"
+                passwordError : "password must contain at least 6 characters, english letters and numbers!"
             })
         }
     }
 
-
     render() {
 
         return (
-            <div>
-                <div>Please, Enter username and password</div>
-                <input class = "detailsOfClient"
-                       onChange={this.onUsernameChange}
-                       value={this.state.username}
-                       placeholder={"Enter username"}
-                />
-                <br/>
-                <input class = "detailsOfClient"
-                       onChange={this.onPasswordChange}
-                       value={this.state.password}
-                       placeholder={"Enter password"}
-                />
+            <div id={"frame"} >
+                <div class={"signUpContainer"}>
+                    <b id="title">Sign-Up</b>
+                    <div class={"midTitle"}>Please, Enter username and password</div>
+                    <br/>
+                    <input  class = "detailsOfClient"
+                           onChange={this.onUsernameChange}
+                           value={this.state.username}
+                           placeholder={"Enter username"}
+                    />
+                    <br/>
+                    {
+                        this.state.usernameError.length > 0 &&
+                        <div class={"signUpUsernameError"}>{this.state.usernameError}</div>
+                    }
+                    <input  class = {"detailsOfClient"}
+                           onChange={this.onPasswordChange}
+                           value={this.state.password}
+                           placeholder={"Enter password"}
+                    />
+                    <br/>
+                    {
+                        this.state.passwordError.length > 0 &&
+                        <div class={"signUpPasswordError"}>{this.state.passwordError}</div>
+                    }
 
-                <br/>
-                <button id ="button" onClick={this.signUp}>Create</button>
-                {
-                    this.state.response.length > 0  &&
-                    <div style={{color : this.state.responseColor }}> {this.state.response} </div>
-                }
+                    <br/>
+                    <button class={"signUpButton"} onClick={this.signUp}>Create</button>
+                    {
+                        this.state.response.length > 0  &&
+                        <span> {this.state.response} </span>
+                    }
+                </div>
             </div>
         )
     }

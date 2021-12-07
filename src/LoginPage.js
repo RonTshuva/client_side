@@ -1,4 +1,5 @@
 import './App.css';
+import './LoginPage.css'
 import * as React from "react";
 import Cookies from "universal-cookie";
 import axios from "axios";
@@ -47,7 +48,7 @@ class LoginPage extends React.Component {
                         this.setState({response: "password is incorrect! you tried "+ response.data.responseData + " out of 5 tries!" });
                         break;
                     case errorCodes.BLOCKED_ACCOUNT:
-                        this.setState({response: "account is blocked!"});
+                        this.setState({response: "account '" + this.state.username +"' is blocked!"});
                         break;
                     default:
                         this.setState({response: "something went wrong!"});
@@ -59,34 +60,37 @@ class LoginPage extends React.Component {
     render() {
         return (
             <div>
-                <b id="title">Login page</b>
-                <div id="frame">
-                    <br/>
-                    Enter your login credentials
-                    <br/>
-                    <b> Username:</b>
-                    <br/>
-                    <input class="detailsOfClient"
-                           onChange={this.onUsernameChange}
-                           value={this.state.username}
-                           placeholder={"Enter username"}
-                    />
-                    <br/>
-                    <b> Password:</b>
-                    <br/>
-                    <input class="detailsOfClient"
-                           onChange={this.onPasswordChange}
-                           value={this.state.password}
-                           placeholder={"Enter password"}
-                    />
+
+                <div id="frame" class={"container"}>
+                    <div>
+                        <b id="title">Login page</b>
+                        <br/>
+                        <span class={"midTitle"}>Enter your login credentials</span>
+                        <br/>
+                        <b> Username:</b>
+                        <br/>
+                        <input id={"detailsOfClient"}
+                               onChange={this.onUsernameChange}
+                               value={this.state.username}
+                               placeholder={"Enter username"}
+                        />
+                        <br/>
+                        <b > Password:</b>
+                        <br/>
+                        <input id={"detailsOfClient"}
+                               onChange={this.onPasswordChange}
+                               value={this.state.password}
+                               placeholder={"Enter password"}
+                        />
+                        <br/>
+                        <br/>
+                    </div>
+                    <button id="button" class={"buttons"} disabled={this.state.password.length === 0 || this.state.username.length === 0}  onClick={this.login}>Login</button>
+                    <NavLink to={"/sign-up"} >
+                        <button id={"button"} class={"buttons"} >Sign Up</button>
+                    </NavLink>
                 </div>
-                <br/>
-                <button disabled={this.state.password.length === 0 || this.state.username.length === 0} id="button" onClick={this.login}>Login</button>
-                <br/>
-                <NavLink to={"/sign-up"}>
-                    <br/>
-                    <button id="button">Sign Up</button>
-                </NavLink>
+
                 {
                     this.state.response.length > 0 &&
                     <div style={{color: "red"}}> {this.state.response}</div>
