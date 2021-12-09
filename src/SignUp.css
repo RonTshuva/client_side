@@ -1,0 +1,54 @@
+
+
+#frame{
+    background-color: papayawhip;
+    width: 300px;
+    height: 195px;
+    border-radius: 8px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 12px double #000;
+    transform: translate(10px, 300px) scale(1.9);
+}
+
+.detailsOfClient{
+    color: black;
+    border: 2px solid darkgray;
+    border-radius: 8px;
+    margin: auto;
+    padding: 3px;
+}
+
+.signUpContainer{
+    text-align: center;
+    transform: translate(5px, 0px)
+}
+
+
+
+.signUpUsernameError{
+    color: red;
+    font-size: 10px;
+}
+
+.signUpPasswordError{
+    color: red;
+    font-size: 9px;
+}
+
+.midTitle{
+    font-family: Gill Sans;
+}
+
+.signUpButton{
+    text-shadow: 2px 2px 3px antiquewhite;
+    width:75px;
+    height: 24px;
+    background-color:burlywood;
+    font-size: 11px;
+    text-align: center;
+    color: aliceblue;
+    border-radius: 8px;
+    max-width: 500px;
+    transform: translate(0px, -20px)
+}

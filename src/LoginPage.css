@@ -1,0 +1,30 @@
+
+
+
+#detailsOfClient{
+    color: black;
+    border: 2px solid darkgray;
+    border-radius: 8px;
+    margin: auto;
+    padding: 3px;
+}
+
+.container{
+    transform: translate(-10px, 300px) scale(1.9);
+    text-align: center;
+}
+
+.LoginPageError{
+    color : red;
+    transform: translate(0px, 10px)
+
+}
+.midTitle{
+    font-family: Gill Sans ;
+}
+
+.buttons{
+    transform: translate(0px, -15px);
+    width:10px;
+    height: 10px;
+}
