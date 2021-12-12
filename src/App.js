@@ -44,6 +44,7 @@ class App extends React.Component{
                           this.state.isLoggedIn ?
                               <div>
                                   <Routes>
+                                      <Route path={"/"} element={<HomePage/>}/>
                                       <Route path={"/login"} element={<HomePage/>}/>
                                       <Route path={"/sign-up"} element={<HomePage/>}/>
                                       <Route path={"/messagesPage"} element={<MessagesPage/>}/>
@@ -54,6 +55,7 @@ class App extends React.Component{
                                 :
                               <div>
                                   <Routes>
+                                      <Route path={"/"} element={<LoginPage/>}/>
                                       <Route path={"/login"} element={<LoginPage/>}/>
                                       <Route path={"/sign-up"} element={<SignUp/>}/>
                                   </Routes>

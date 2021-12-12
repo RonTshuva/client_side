@@ -38,7 +38,7 @@ class HomePage extends React.Component{
                     <div>
                         <br/>
                         <button onClick={this.logout}>
-                        Logout
+                            Logout
                         </button>
                     </div>
             </div>
