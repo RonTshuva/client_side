@@ -9,15 +9,12 @@ import errorCodes from "./ErrorCodes";
 class Messages extends React.Component {
     state = {
         listMessages: [],
-        responseCheck: "",
-        response: ""
+        responseCheckDelete: "",
+        response: "",
+        refresh : true
     }
 
     componentDidMount() {
-        this.getReceivedMessages()
-    }
-
-    getReceivedMessages = () => {
         const cookies = new Cookies();
         axios.get("http://localhost:8989/getReceivedMessages", {
             params: {
@@ -37,43 +34,60 @@ class Messages extends React.Component {
 
     }
 
+    deleteMessage = (e) => {
+        const cookies = new Cookies();
+        axios.get("http://localhost:8989/delete-message",{
+            params:{
+                idOfMessage : e,
+                token: cookies.get("logged_in")
+            }
+        }).then((response) => {
+            if(response.data && response.data === true){
+                this.setState({
+                    responseCheckDelete: "The message has been deleted"
+                })
+            }
+        })
+    }
+
     // This should be before you open the message, when you see only the headline.
     markAsSeen = (e) => {
+        const cookies = new Cookies();
         axios.get("http://localhost:8989/markAsSeen", {
             params: {
-                id: e
+                id: e,
+                token: cookies.get("logged_in")
             }
 
         }).then((response) => {
             if (response.data === 1) {
                 this.setState({
-                    responseCheck: "ble bla bla"
+                    responseCheck: "The value has been updated to 1 "
                 })
             }
         })
 
     }
+
+    changeShowState = (message) => {
+        message.show = !message.show;
+
+        this.setState({refresh : true}) // we need to change the state so it will rerender the page
+    }
+
+
     //when you click on headline it calls showMessage to show full message:
     showMessage = (message) => {
         return (
             <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}>
                 <i style={{fontSize: "12px"}}>
-                    {message.getFrom}
+                    {message.content}
                 </i>
-                <i style={{fontSize: "12px"}}>
-                    {message.getDateSent}
-                </i>
-                <p style={{fontSize: "8px"}}>
-                    {message.getHeadline}
-                </p>
-                <p style={{fontSize: "8px"}}>
-                    {message.getContent}
-                </p>
-                //if you want to mark as seen instead of opening the full message
                 <button style={{fontSize: "5px"}} onClick={() => this.deleteMessage(message.id)}>
                     Delete
                 </button>
             </div>
+        )
     }
 
     // we need to show only headline, and when press headline it will show the full message.
@@ -84,20 +98,28 @@ class Messages extends React.Component {
                 {
                     this.state.listMessages.map(message => {
                         return (
-                            <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}
-                                 onClick={() => this.showMessage(this.message)}>
-                                <i style={{fontSize: "12px"}}>
-                                    {message.getFrom}
+                            <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}>
+                                <i style={{fontSize: "12px"}} onClick={() => this.changeShowState(message)}>
+                                   From: {message.from} <br/>
+                                    Title: {message.headline} <br/>
+                                    {message.dateSent} <br/>
+                                    show : {message.show + ""}
+                                    {
+                                        message.show &&
+                                            this.showMessage(message)
+                                    }
                                 </i>
-                                <i style={{fontSize: "12px"}} onClick={() => this.showMessage(this.message)}>
-                                    {message.getHeadline}
-                                </i>
-                                <button onClick={() => this.markAsSeen(message.getId)}>
-                                    Mark as seen V
+                                <br/>
+                                <button onClick={() => this.markAsSeen(message.id)} disabled={message.read === 1}>
+                                    Seen
                                 </button>
                             </div>
                         )
                     })
+                }
+                {
+                    this.state.responseCheckDelete.length < 0 &&
+                    <div>{this.state.responseCheckDelete}</div>
                 }
             </div>
         )

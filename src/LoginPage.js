@@ -36,8 +36,8 @@ class LoginPage extends React.Component {
             .then((response) => {
                 if (response.data.success) {
                     const cookies = new Cookies();
-                    cookies.set("logged_in", response.data.responseData);
-                    window.location.reload();
+                    cookies.set("logged_in", response.data._data);
+
                 }
                 switch(response.data.errorCode)
                 {
