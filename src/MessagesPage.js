@@ -6,7 +6,7 @@ import axios from "axios";
 import {NavLink} from "react-router-dom";
 import errorCodes from "./ErrorCodes";
 
-class Messages extends React.Component {
+class MessagesPage extends React.Component {
     state = {
         listMessages: [],
         responseCheckDelete: "",
@@ -38,7 +38,7 @@ class Messages extends React.Component {
         const cookies = new Cookies();
         axios.get("http://localhost:8989/delete-message",{
             params:{
-                idOfMessage : e,
+                id : e,
                 token: cookies.get("logged_in")
             }
         }).then((response) => {
@@ -126,4 +126,4 @@ class Messages extends React.Component {
     }
 }
 
-export default Messages;
+export default MessagesPage;

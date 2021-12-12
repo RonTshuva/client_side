@@ -36,22 +36,27 @@ class LoginPage extends React.Component {
             .then((response) => {
                 if (response.data.success) {
                     const cookies = new Cookies();
-                    cookies.set("logged_in", response.data._data);
-
+                    cookies.set("logged_in", response.data.dataString);
+                    this.setState({response : ""})
+                    window.location.reload()
                 }
-                switch(response.data.errorCode)
-                {
-                    case errorCodes.INCORRECT_USERNAME:
-                        this.setState({response: "username is incorrect!"});
-                        break;
-                    case errorCodes.INCORRECT_PASSWORD:
-                        this.setState({response: "password is incorrect! you tried "+ response.data.responseData + " out of 5 tries!" });
-                        break;
-                    case errorCodes.BLOCKED_ACCOUNT:
-                        this.setState({response: "account '" + this.state.username +"' is blocked!"});
-                        break;
-                    default:
-                        this.setState({response: "something went wrong!"});
+                else {
+                    switch (response.data.errorCode) {
+                        case errorCodes.INCORRECT_USERNAME:
+                            this.setState({response: "username is incorrect!"});
+                            break;
+                        case errorCodes.INCORRECT_PASSWORD:
+                            this.setState({response: "password is incorrect! you tried " + response.data.dataString + " out of 5 tries!"});
+                            break;
+                        case errorCodes.BLOCKED_ACCOUNT:
+                            this.setState({response: "account '" + this.state.username + "' is blocked!"});
+                            break;
+                        case errorCodes.GENERAL_ERROR:
+                            this.setState({response: "something went wrong!"});
+                            break;
+                        default:
+                            this.setState({response: "invalid error code!"});
+                    }
                 }
             })
     }
@@ -69,7 +74,7 @@ class LoginPage extends React.Component {
                         <br/>
                         <b> Username:</b>
                         <br/>
-                        <input id={"detailsOfClient"}
+                        <input class={"detailsOfClient"}
                                onChange={this.onUsernameChange}
                                value={this.state.username}
                                placeholder={"Enter username"}
@@ -77,7 +82,7 @@ class LoginPage extends React.Component {
                         <br/>
                         <b > Password:</b>
                         <br/>
-                        <input id={"detailsOfClient"}
+                        <input class={"detailsOfClient"}
                                onChange={this.onPasswordChange}
                                value={this.state.password}
                                placeholder={"Enter password"}
@@ -85,9 +90,11 @@ class LoginPage extends React.Component {
                         <br/>
                         <br/>
                     </div>
-                    <button id="button" class={"buttons"} disabled={this.state.password.length === 0 || this.state.username.length === 0}  onClick={this.login}>Login</button>
+                    <button id="button"  style={{backgroundColor: "darkblue"}}
+                            disabled={this.state.password.length === 0 || this.state.username.length === 0}
+                            onClick={this.login}>Login</button>
                     <NavLink to={"/sign-up"} >
-                        <button id={"button"} class={"buttons"} >Sign Up</button>
+                        <button id={"button"} style={{backgroundColor: "green"}} >Sign Up</button>
                     </NavLink>
                     <br/>
                     {

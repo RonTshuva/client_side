@@ -1,16 +1,16 @@
 
 
 
-#detailsOfClient{
+.detailsOfClient{
     color: black;
     border: 2px solid darkgray;
     border-radius: 8px;
     margin: auto;
-    padding: 3px;
+    padding: 2px;
 }
 
 .container{
-    transform: translate(-10px, 300px) scale(1.9);
+    transform: translate(-10px, 200px) scale(1.5);
     text-align: center;
 }
 

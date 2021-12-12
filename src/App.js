@@ -4,11 +4,13 @@ import * as React from "react";
 import SignUp from "./SignUp";
 import LoginPage from "./LoginPage";
 import HomePage from "./HomePage";
-import Messages from "./MessagesPage";
+import MessagesPage from "./MessagesPage";
+import NewMessage from "./NewMessage";
 import { BrowserRouter ,Routes, Route} from 'react-router-dom';
 import Cookies from "universal-cookie/lib";
 import axios from "axios";
 import errorCodes from "./ErrorCodes";
+
 
 class App extends React.Component{
 
@@ -41,11 +43,11 @@ class App extends React.Component{
                       {
                           this.state.isLoggedIn ?
                               <div>
-                                  <HomePage/>
                                   <Routes>
                                       <Route path={"/login"} element={<HomePage/>}/>
                                       <Route path={"/sign-up"} element={<HomePage/>}/>
-                                      <Route path={"/messages"} element={<Messages/>}/>
+                                      <Route path={"/messagesPage"} element={<MessagesPage/>}/>
+                                      <Route path={"/newMessage"} element={<NewMessage/>}/>
                                   </Routes>
 
                               </div>

@@ -75,7 +75,7 @@ class SignUp extends React.Component {
                 .then((response) => {
                     if (response.data) {
                         this.setState({
-                            responseServer: "You are hara"
+                            responseServer: "You signed up!"
                         })
                     } else {
                         this.setState({
@@ -89,40 +89,44 @@ class SignUp extends React.Component {
     render() {
 
         return (
-            <div>
+            <div id="frame" class={"container"}>
+                <b id="title">Sign-Up Page</b>
+                <br/>
                 <div>Please, Enter username and password</div>
+                <b> Username:</b>
+                <br/>
                 <input class = "detailsOfClient"
                        onChange={this.onUsernameChange}
                        value={this.state.username}
                        placeholder={"Enter username"}
                 />
+                <br/>
                 {
                     this.state.usernameError.length > 0  &&
                     <div style={{color : this.state.responseColor }}> {this.state.usernameError} </div>
                 }
+                <b>Password:</b>
                 <br/>
                 <input class = "detailsOfClient"
                        onChange={this.onPasswordChange}
                        value={this.state.password}
                        placeholder={"Enter password"}
                 />
+                <br/>
                 {
                     this.state.passwordError.length > 0  &&
                     <div style={{color : this.state.responseColor }}> {this.state.passwordError} </div>
                 }
-                <h6>(The username must to be 10 numbers)</h6>
-                <NavLink to={"/login-page"}>
+                <br/>
+                <NavLink to={"/login"}>
                     <button id="button" style={{backgroundColor: "darkblue"}}>Back</button>
                 </NavLink>
 
-                    <br/>
-                    <button id ="button" style={{backgroundColor: "green"}} onClick={this.signUp}>Create</button>
+                <button id ="button" style={{backgroundColor: "green"}} onClick={this.signUp}>Create</button>
                 {
                     this.state.responseServer.length > 0 &&
                         <div>{this.state.responseServer}</div>
-
                 }
-
 
             </div>
         )

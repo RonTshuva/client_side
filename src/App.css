@@ -4,8 +4,8 @@ body{
 }
 #frame{
   background-color: papayawhip;
-  width: 300px;
-  height: 195px;
+  width: 320px;
+  height: 200px;
   border-radius: 8px;
   margin-left: auto;
   margin-right: auto;
@@ -17,16 +17,15 @@ body{
   margin: auto;
   font-family: Sofia;
   font-style: italic;
-  font-size: 30px;
+  font-size: 25px;
   color: rosybrown;
   max-width: 500px;
 
 }
-#button{
+#button {
   text-shadow: 2px 2px 3px antiquewhite;
-  width:75px;
+  width: 75px;
   height: 24px;
-  background-color:burlywood;
   font-size: 11px;
   text-align: center;
   color: aliceblue;
@@ -34,11 +33,9 @@ body{
   max-width: 500px;
 }
 
-
-
-
 .App {
   text-align: center;
+  color: #61dafb;
 }
 
 .App-logo {

@@ -6,8 +6,8 @@ class HomePage extends React.Component{
 
     state = {
         links : [
-            {title:"Massages", path:"/messages"}
-
+            {title:"Massages", path:"/messagesPage"},
+            {title:"New Message" , path:"/newMessage"}
         ]
     }
 
