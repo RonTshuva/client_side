@@ -15,6 +15,11 @@ class MessagesPage extends React.Component {
     }
 
     componentDidMount() {
+        this.getReceivedMessages()
+    }
+
+    getReceivedMessages = () =>{
+        console.log("here")
         const cookies = new Cookies();
         axios.get("http://localhost:8989/getReceivedMessages", {
             params: {
@@ -25,24 +30,19 @@ class MessagesPage extends React.Component {
                 this.setState({
                     listMessages: response.data
                 })
-            } else {
-                this.setState({
-                    response: "You don't have any messages"
-                })
             }
         })
-
     }
 
-    deleteMessage = (e) => {
+    deleteMessage = (id) => {
         const cookies = new Cookies();
         axios.get("http://localhost:8989/delete-message",{
             params:{
-                id : e,
+                id : id,
                 token: cookies.get("logged_in")
             }
         }).then((response) => {
-            if(response.data && response.data === true){
+            if(response.data.success){
                 this.setState({
                     responseCheckDelete: "The message has been deleted"
                 })
@@ -51,19 +51,21 @@ class MessagesPage extends React.Component {
     }
 
     // This should be before you open the message, when you see only the headline.
-    markAsSeen = (e) => {
+    markAsSeen = (id) => {
         const cookies = new Cookies();
         axios.get("http://localhost:8989/markAsSeen", {
             params: {
-                id: e,
+                id: id,
                 token: cookies.get("logged_in")
             }
 
         }).then((response) => {
-            if (response.data === 1) {
+            if (response.data.success) {
                 this.setState({
                     responseCheck: "The value has been updated to 1 "
                 })
+            }else{
+                this.setState({responseCheck : "failed to get messages!"})
             }
         })
 
@@ -71,7 +73,6 @@ class MessagesPage extends React.Component {
 
     changeShowState = (message) => {
         message.show = !message.show;
-
         this.setState({refresh : true}) // we need to change the state so it will rerender the page
     }
 
@@ -90,36 +91,46 @@ class MessagesPage extends React.Component {
         )
     }
 
+    mapMessagesList = () => {
+        const listMessagesMapped = this.state.listMessages.map(message => {
+            return (
+                <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}>
+                    <i style={{fontSize: "12px"}} >
+                        From: {message.from} <br/>
+                        <b onClick={() => this.changeShowState(message)} > Title: {message.headline} (click to reveal message) </b> <br/>
+                        {message.dateSent} <br/>
+                        show : {message.show + ""}
+                        {
+                            message.show &&
+                            this.showMessage(message)
+                        }
+                    </i>
+                    <br/>
+                    <button onClick={() => this.markAsSeen(message.id)} disabled={message.read === 1}>
+                        Seen
+                    </button>
+                </div>
+            )
+        })
+        return listMessagesMapped;
+    }
+
     // we need to show only headline, and when press headline it will show the full message.
     // How do i set it so if i click once it show message and press again the message become only headline again?
     render() {
         return (
             <div>
                 {
-                    this.state.listMessages.map(message => {
-                        return (
-                            <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}>
-                                <i style={{fontSize: "12px"}} onClick={() => this.changeShowState(message)}>
-                                   From: {message.from} <br/>
-                                    Title: {message.headline} <br/>
-                                    {message.dateSent} <br/>
-                                    show : {message.show + ""}
-                                    {
-                                        message.show &&
-                                            this.showMessage(message)
-                                    }
-                                </i>
-                                <br/>
-                                <button onClick={() => this.markAsSeen(message.id)} disabled={message.read === 1}>
-                                    Seen
-                                </button>
-                            </div>
-                        )
-                    })
+
+                    this.state.listMessages.length > 0 ?
+                        <div>{this.mapMessagesList()}</div>
+                        :
+                        <div> you dont have any messages</div>
+
                 }
                 {
                     this.state.responseCheckDelete.length < 0 &&
-                    <div>{this.state.responseCheckDelete}</div>
+                        <div>{this.state.responseCheckDelete}</div>
                 }
             </div>
         )
