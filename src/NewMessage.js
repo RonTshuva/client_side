@@ -11,48 +11,98 @@ class NewMessage extends React.Component{
     state ={
         to: "",
         headline:"",
-        content:""
+        content:"",
+        usernameExists : false,
+        usernameColor : "black",
+        response : ""
     }
 
-    onUsernameChange = () => {
+    onUsernameChange = (e) => {
+        this.setState({
+            to : e.target.value
+        })
+    }
+    onHeadlineChange =(e) =>{
+        this.setState({
+            headline : e.target.value
+        })
 
     }
-    onHeadlineChange =() =>{
+    onContentChange = (e) => {
+        this.setState({
+            content : e.target.value
+        })
 
     }
-    onContentChange = () => {
 
+    checkUsernameExist = () => {
+        axios.get("http://localhost:8989/usernameExist",{
+            params:{
+                username : this.state.to
+            }
+        }).then((response) =>{
+
+            this.setState({
+                usernameExists : response.data.success,
+                usernameColor : response.data.success ? "green" : "red",
+                response : response.data.success ? "" : "didn't found username!"
+            })
+
+        })
     }
     sendMessage = () => {
+        const cookies = new Cookies();
+        axios.get("http://localhost:8989/sendMessage",{
+            params:{
+                token : cookies.get("logged_in"),
+                to : this.state.to,
+                headline : this.state.headline,
+                content : this.state.content
+            }
+        }).then((response) =>{
+            if(response.data.success) {
+                this.setState({
+                    response : "message send!"
+                })
+            }
 
+        })
     }
 
 
     render(){
+        const validMessage = (this.state.content.length > 1 &&
+            this.state.headline.length > 1 && this.state.usernameExists)
+
         return(
             <div id="frame" class={"container"}>
-                <i id="title">New Message:</i>
+                <b id="title">New Message:</b>
                 <br/> <br/>
                 To :
                 <input class={"detailsOfClient"}
-                   placeholder={"Enter username"}
-                   onChange={this.onUsernameChange}
-                   value={this.to}/>
+                       placeholder={"Enter username"}
+                       style={{color : this.state.usernameColor}}
+                       onBlur={this.checkUsernameExist}
+                       onChange={this.onUsernameChange}
+                       value={this.to}/>
                 <br/>
                 Title:
                 <input class={"detailsOfClient"}
-                      placeholder={"Enter Title"}
-                      onChange={this.onHeadlineChange}
-                      value={this.headline}/>
-                <br/> <br/>
+                       placeholder={"Enter Title"}
+                       onBlur={this.checkUsernameExist}
+                       onChange={this.onHeadlineChange}
+                       value={this.headline}/>
+                       <div> {this.state.response.length > 0 && this.state.response}</div>
+
                 <i>body:</i>
                 <br/>
                 <textarea class={"detailsOfClient"}
-                  placeholder={"Enter text here"}
-                  onChange={this.onContentChange}
-                  value={this.content}/> <br/>
-                <button id ={"button"}style={{backgroundColor: "#61dafb"}}onClick={this.sendMessage}>Sent</button>
-
+                          placeholder={"Enter text here"}
+                          onChange={this.onContentChange}
+                          onBlur={this.checkUsernameExist}
+                          value={this.content}/> <br/>
+                <button id ={"button"}style={{backgroundColor: "#61dafb"}}onClick={this.sendMessage}
+                disabled={!validMessage}>Sent</button>
             </div>
         )
     }
