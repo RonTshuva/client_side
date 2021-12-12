@@ -2,12 +2,12 @@ import * as React from "react";
 import {NavLink} from "react-router-dom";
 import Cookies from "universal-cookie";
 
-class HomePage extends React.Component{
+class HomePage extends React.Component {
 
     state = {
-        links : [
-            {title:"Messages", path:"/messagesPage"},
-            {title:"New Message" , path:"/newMessage"}
+        links: [
+            {title: "Messages", path: "/messagesPage"},
+            {title: "New Message", path: "/newMessage"}
         ]
     }
 
@@ -19,7 +19,7 @@ class HomePage extends React.Component{
 
 
     render() {
-        return(
+        return (
             <div>
                 <div>
                     {
@@ -33,17 +33,18 @@ class HomePage extends React.Component{
                             )
                         })
                     }
-                 </div>
+                </div>
 
-                    <div>
-                        <br/>
-                        <button onClick={this.logout}>
-                            Logout
-                        </button>
-                    </div>
+                <div>
+                    <br/>
+                    <button onClick={this.logout}>
+                        Logout
+                    </button>
+                </div>
             </div>
         )
     }
 
 }
+
 export default HomePage;
