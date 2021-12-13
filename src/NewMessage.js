@@ -103,6 +103,11 @@ class NewMessage extends React.Component{
                           value={this.content}/> <br/>
                 <button id ={"button"}style={{backgroundColor: "#61dafb"}}onClick={this.sendMessage}
                 disabled={!validMessage}>Sent</button>
+                <NavLink to={"/"}>
+                    <button id={"button"} style={{backgroundColor: "red"}} >
+                        Back
+                    </button><br/>
+                </NavLink>
             </div>
         )
     }

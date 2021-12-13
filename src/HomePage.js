@@ -26,9 +26,9 @@ class HomePage extends React.Component{
                         this.state.links.map(link => {
                             return (
                                 <NavLink to={link.path}>
-                                    <ol>
+                                    <button id={"button"} style={{backgroundColor: "green"}} >
                                         {link.title}
-                                    </ol>
+                                    </button><br/>
                                 </NavLink>
                             )
                         })
@@ -37,7 +37,7 @@ class HomePage extends React.Component{
 
                     <div>
                         <br/>
-                        <button onClick={this.logout}>
+                        <button id={"button"} style={{backgroundColor: "red"}} onClick={this.logout}>
                             Logout
                         </button>
                     </div>

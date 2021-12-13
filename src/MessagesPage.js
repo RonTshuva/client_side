@@ -9,7 +9,7 @@ import errorCodes from "./ErrorCodes";
 class MessagesPage extends React.Component {
     state = {
         listMessages: [],
-        responseCheckDelete: "",
+        responseCheck: "",
         response: "",
         refresh : true
     }
@@ -44,8 +44,9 @@ class MessagesPage extends React.Component {
         }).then((response) => {
             if(response.data.success){
                 this.setState({
-                    responseCheckDelete: "The message has been deleted"
+                    responseCheck: "The message has been deleted!"
                 })
+                this.getReceivedMessages()
             }
         })
     }
@@ -62,8 +63,9 @@ class MessagesPage extends React.Component {
         }).then((response) => {
             if (response.data.success) {
                 this.setState({
-                    responseCheck: "The value has been updated to 1 "
+                    responseCheck: "Marked as read successfully!"
                 })
+                this.getReceivedMessages()
             }else{
                 this.setState({responseCheck : "failed to get messages!"})
             }
@@ -83,8 +85,8 @@ class MessagesPage extends React.Component {
             <div style={{borderBottom: "1px solid black", padding: "10px", width: "300px"}}>
                 <i style={{fontSize: "12px"}}>
                     {message.content}
-                </i>
-                <button style={{fontSize: "5px"}} onClick={() => this.deleteMessage(message.id)}>
+                </i><br/><br/>
+                <button id={"button"} style={{backgroundColor: "darkblue"}} onClick={() => this.deleteMessage(message.id)}>
                     Delete
                 </button>
             </div>
@@ -99,16 +101,16 @@ class MessagesPage extends React.Component {
                         From: {message.from} <br/>
                         <b onClick={() => this.changeShowState(message)} > Title: {message.headline} (click to reveal message) </b> <br/>
                         {message.dateSent} <br/>
-                        show : {message.show + ""}
                         {
                             message.show &&
-                            this.showMessage(message)
+                                this.showMessage(message)
                         }
                     </i>
                     <br/>
-                    <button onClick={() => this.markAsSeen(message.id)} disabled={message.read === 1}>
+                    <button id={"button"} style={{backgroundColor: "green"}} onClick={() => this.markAsSeen(message.id)} disabled={message.read}>
                         Seen
                     </button>
+                    { !message.read && <b>unread!</b>}
                 </div>
             )
         })
@@ -128,9 +130,14 @@ class MessagesPage extends React.Component {
                         <div> you dont have any messages</div>
 
                 }
+                <NavLink to={"/"}>
+                    <button id={"button"} style={{backgroundColor: "red"}} >
+                        Back
+                    </button><br/>
+                </NavLink>
                 {
-                    this.state.responseCheckDelete.length < 0 &&
-                        <div>{this.state.responseCheckDelete}</div>
+                    this.state.responseCheck.length > 0 &&
+                        <div>{this.state.responseCheck}</div>
                 }
             </div>
         )
