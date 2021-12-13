@@ -21,26 +21,26 @@ class HomePage extends React.Component{
     render() {
         return(
             <div>
-                <div>
+                <div id="frame" class={"container"}>
+                    <b id="title">Home Page</b><br/>
                     {
                         this.state.links.map(link => {
                             return (
                                 <NavLink to={link.path}>
-                                    <button id={"button"} style={{backgroundColor: "green"}} >
-                                        {link.title}
-                                    </button><br/>
+                                    <br/>
+                                    <button id={"button"} style={{backgroundColor: "green" , width : "150px"}} >
+                                        <b style={{fontSize : "9px"}}>{link.title}</b>
+                                    </button>
                                 </NavLink>
                             )
                         })
-                    }
-                 </div>
 
-                    <div>
-                        <br/>
-                        <button id={"button"} style={{backgroundColor: "red"}} onClick={this.logout}>
-                            Logout
-                        </button>
-                    </div>
+                    }
+                    <br/><br/>
+                    <button id={"button"} style={{backgroundColor: "red"}} onClick={this.logout}>
+                        Logout
+                    </button>
+                 </div>
             </div>
         )
     }
